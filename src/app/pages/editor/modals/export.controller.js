@@ -49,6 +49,9 @@
       else if (vm.type === 'tree' && vm.format === 'json') {
         _createJson(e.treeToData());
       }
+      else if (vm.type === 'bbtree' && vm.format === 'json') {
+        _createJson(e.treeToBBBTModel());
+      }
       else if (vm.type === 'nodes' && vm.format === 'json') {
         _createJson(e.nodesToData());
       }

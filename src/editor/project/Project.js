@@ -51,12 +51,6 @@
         description  : 'Takes multiple children and runs one of them at random.',
       },
       {
-        name         : 'random_weighted',
-        category     : 'composite',
-        title        : 'Random weighted',
-        description  : 'Takes multiple children and runs one of them at random based on their weightings.  Each child node MUST have a "weight" property with a value greater than 0.',
-      },
-      {
         name         : 'repeat_n',
         category     : 'decorator',
         title        : 'Repeat <n>x',
@@ -82,52 +76,16 @@
         description  : 'Takes one child.  If that child succeeds, this node fails, and vice versa.',
       },
       {
-        name         : 'always_fail',
-        category     : 'decorator',
-        title        : 'Always fail',
-        description  : 'Takes one child and fails regardless of its outcome.',
-      },
-      {
-        name         : 'always_succeed',
-        category     : 'decorator',
-        title        : 'Always succeed',
-        description  : 'Takes one child and succeeds regardless of its outcome.',
-      },
-      {
-        name         : 'runner',
+        name         : 'action',
         category     : 'action',
-        title        : 'Module.function(1, 2, 3)',
-        description  : 'An action that calls the function specified in the title (must be in valid Elixir terms).  The title can contain "template variables" (like `{{mod}}.rename({{new_name}}, true)`) which will be replaced with corresponding values looked up on the parent tree.',
-      },
-      {
-        name         : 'wait',
-        category     : 'action',
-        title        : 'wait(1)',
-        description  : '"Pauses" the bot for the specified number of seconds.  You can specify two numbers (like `wait(1,10)`) to wait a random number of seconds between those numbers.',
-      },
-      {
-        name         : 'error',
-        category     : 'action',
-        title        : 'error("Oops...")',
-        description  : 'Raises an error with the supplied message.',
+        title        : 'Action',
+        description  : '',
       },
       {
         name         : 'log',
         category     : 'action',
-        title        : 'log("Info...")',
+        title        : 'Log',
         description  : 'Logs the specified message.',
-      },
-      {
-        name         : 'succeed_rate',
-        category     : 'action',
-        title        : 'succeed_rate(0.5)',
-        description  : 'Succeeds randomly at the specified rate, expressed as a number between 0 and 1.  For example, a rate of 0.25 will succeed one out of every 4 times on average.',
-      },
-      {
-        name         : 'done',
-        category     : 'action',
-        title        : 'done()',
-        description  : 'Stops the behavior tree.',
       },
     ];
 

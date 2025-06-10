@@ -106,6 +106,105 @@ b3e.editor.ExportManager = function(editor) {
     return data;
   };
 
+this.treeToBBBTModel = function(tree, ignoreNodes) {
+  var project = editor.project.get();
+  var superIndex = 0;
+
+  if (!project) return;
+
+  if (!tree) {
+    tree = project.trees.getSelected();
+  } else {
+    tree = project.trees.get(tree);
+    if (!tree) return;
+  }
+
+  var root = tree.blocks.getRoot();
+  var rootChildren = getBlockChildrenIds(root);
+
+  var nodesMap = {};
+  tree.blocks.each(function(block) {
+    if (block.category !== 'root') {
+      var d = {
+        id: block.id,
+        name: block.name,
+        title: block.title,
+        description: block.description,
+        properties: block.properties || {},
+        category: block.category
+      };
+
+      var children = getBlockChildrenIds(block);
+      if (block.category === 'composite') {
+        d.children = children;
+      } else if (block.category === 'decorator') {
+        d.child = children[0];
+      }
+
+      nodesMap[block.id] = d;
+    }
+  });
+
+  function buildNode(nodeId) {
+    const node = nodesMap[nodeId];
+    if (!node) return null;
+
+    const result = {};
+    result.type = node.name;
+
+    if (node.properties && Object.keys(node.properties).length > 0) {
+      result.parameters = { ...node.properties };
+    }
+
+    if (node.category === 'composite' && node.children) {
+      result.children = {};
+      node.children.forEach((childId, index) => {
+        var child = buildNode(childId);
+        const name = nodesMap[childId].category === 'action' ? nodesMap[childId].title : child.type;
+        const childLabel = `${name}.${String.fromCharCode(97 + superIndex)}`;
+        result.children[childLabel] = child;
+
+        delete child.type;
+      });
+    } else if (node.category === 'decorator' && node.child) {
+      var child = buildNode(node.child);
+      const name = nodesMap[node.child].category === 'action' ? nodesMap[node.child].title : child.type;
+      const childLabel = `${name}.${String.fromCharCode(97 + superIndex)}`;
+
+      result.children = {
+        [childLabel]: child
+      };
+
+      delete child.type;
+
+    } else if (node.category === 'action' || (!node.children && !node.child)) {
+      //result.commands = [];
+    }
+
+    superIndex++;
+
+    return result;
+  }
+
+  const treeRootId = rootChildren[0];
+  const nestedTree = buildNode(treeRootId);
+
+  const result = {
+    version     : b3e.VERSION,
+    scope       : 'tree',
+    id          : tree._id,
+    title       : root.title,
+    description : root.description,
+    tree        : nestedTree
+  };
+
+  if (!ignoreNodes) {
+    result.custom_nodes = this.nodesToData();
+  }
+
+  return result.tree;
+};
+
   this.nodesToData = function() {
     var project = editor.project.get();
     if (!project) return;
