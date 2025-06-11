@@ -45,10 +45,10 @@
         description  : 'Takes multiple children and runs them from top to bottom (or left to right), succeeding when any one succeeds.  Fails if all fail.',
       },
       {
-        name         : 'random',
+        name         : 'parallel',
         category     : 'composite',
-        title        : 'Random',
-        description  : 'Takes multiple children and runs one of them at random.',
+        title        : 'Parallel',
+        description  : '',
       },
       {
         name         : 'repeat_n',
@@ -58,16 +58,23 @@
         properties   : {n: 2}
       },
       {
-        name         : 'repeat_until_fail',
+        name         : 'untilFalse',
         category     : 'decorator',
         title        : 'Repeat until fail',
         description  : 'Takes one child which it repeats until it fails.  This node always succeeds.',
       },
       {
-        name         : 'repeat_until_succeed',
+        name         : 'untilTrue',
         category     : 'decorator',
         title        : 'Repeat until succeed',
         description  : 'Takes one child which it repeats until it succeeds.  This node always succeeds.',
+      },
+      {
+        name         : 'untilTime',
+        category     : 'decorator',
+        title        : 'Repeat until time',
+        description  : '',
+        properties   : {min: 1, max: 2}
       },
       {
         name         : 'negate',
